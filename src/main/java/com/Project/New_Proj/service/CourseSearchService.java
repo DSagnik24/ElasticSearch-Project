@@ -8,6 +8,7 @@ import co.elastic.clients.elasticsearch.core.SearchRequest;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.search.Hit;
 import com.Project.New_Proj.model.CourseDocument;
+import com.Project.New_Proj.repository.CourseRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,7 @@ import java.util.List;
 public class CourseSearchService {
 
     private final ElasticsearchClient elasticsearchClient;
+    private final CourseRepository courseRepository;
 
     public List<CourseDocument> searchCourses(
             String keyword,
@@ -136,4 +138,14 @@ public class CourseSearchService {
             return List.of();
         }
     }
+
+    public CourseDocument getCourseById(String id) {
+        try {
+            return courseRepository.findById(id).orElse(null);
+        } catch (Exception e) {
+            log.error("Failed to get course by ID", e);
+            return null;
+        }
+    }
+
 }

@@ -5,7 +5,7 @@ import com.Project.New_Proj.service.CourseIndexService;
 import com.Project.New_Proj.service.CourseSearchService;
 import com.Project.New_Proj.util.JsonLoader;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,12 +13,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class CourseController {
 
-    @Autowired
     private final CourseSearchService searchService;
     private final CourseIndexService indexService;
     private final JsonLoader jsonLoader;
@@ -48,28 +48,34 @@ public class CourseController {
         return response;
     }
 
+
     @GetMapping("/load")
     public ResponseEntity<List<CourseDocument>> loadCourses() {
         List<CourseDocument> loadedCourses = jsonLoader.loadDataFromJson();
-        return ResponseEntity.ok(loadedCourses); // Spring will serialize it to JSON
+        return ResponseEntity.ok(loadedCourses);
     }
-
 
     @PostMapping("/courses")
-    public CourseDocument createOrUpdateCourse(@RequestBody CourseDocument course) {
-        return indexService.createOrUpdateCourse(course);
-    }
-
-    @DeleteMapping("/courses/{id}")
-    public void deleteCourse(@PathVariable String id) {
-        indexService.deleteCourseById(id);
+    public ResponseEntity<CourseDocument> createOrUpdateCourse(@RequestBody CourseDocument course) {
+        return ResponseEntity.ok(indexService.createOrUpdateCourse(course));
     }
 
     @PutMapping("/courses/{id}")
-    public CourseDocument updateCourse(@PathVariable String id, @RequestBody CourseDocument course) {
+    public ResponseEntity<CourseDocument> updateCourse(@PathVariable String id, @RequestBody CourseDocument course) {
         course.setId(id);
-        return indexService.createOrUpdateCourse(course);
+        return ResponseEntity.ok(indexService.createOrUpdateCourse(course));
     }
 
+    @DeleteMapping("/courses/{id}")
+    public ResponseEntity<Void> deleteCourse(@PathVariable String id) {
+        indexService.deleteCourseById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/courses/{id}")
+    public ResponseEntity<CourseDocument> getCourseById(@PathVariable String id) {
+        CourseDocument course = searchService.getCourseById(id);
+        return course != null ? ResponseEntity.ok(course) : ResponseEntity.notFound().build();
+    }
 
 }

@@ -21,6 +21,7 @@ public class CourseIndexService {
     private final CourseRepository courseRepository;
     private final ObjectMapper objectMapper;
 
+
     @PostConstruct
     public void loadCoursesAtStartup(){
         try{
@@ -58,5 +59,8 @@ public class CourseIndexService {
             throw new RuntimeException("Course not found");
         }
     }
+
+
+
 
 }
