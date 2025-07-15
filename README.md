@@ -83,6 +83,8 @@ If you prefer to run the application locally (outside Docker):
   [http://localhost:9200](http://localhost:9200)
 - The application should log a successful startup message.
 - If the project exposes APIs, test them using `curl` or Postman (refer to the source code or add API details here).
+- Sample data of nearly 75 entries present "ElasticSearch-Project/src/main/resources
+/courses.json". 
 
 ## Troubleshooting
 
