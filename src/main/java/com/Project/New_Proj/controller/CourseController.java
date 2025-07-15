@@ -6,6 +6,7 @@ import com.Project.New_Proj.service.CourseSearchService;
 import com.Project.New_Proj.util.JsonLoader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.elasticsearch.core.suggest.response.Suggest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +23,7 @@ public class CourseController {
     private final CourseSearchService searchService;
     private final CourseIndexService indexService;
     private final JsonLoader jsonLoader;
+
 
     @GetMapping("/courses/search")
     public Map<String,Object> searchCourses(
@@ -77,5 +79,8 @@ public class CourseController {
         CourseDocument course = searchService.getCourseById(id);
         return course != null ? ResponseEntity.ok(course) : ResponseEntity.notFound().build();
     }
+
+
+
 
 }

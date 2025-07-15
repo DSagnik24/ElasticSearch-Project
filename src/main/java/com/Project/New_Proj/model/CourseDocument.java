@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.*;
 
+import javax.annotation.processing.Completion;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
@@ -46,5 +47,8 @@ public class CourseDocument {
 
     @Field(type = FieldType.Date, format = DateFormat.date_time)
     private Instant nextSessionDate;
+
+    @CompletionField
+    private Completion suggest;
 
 }
